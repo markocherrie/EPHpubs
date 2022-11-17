@@ -18,7 +18,7 @@ write.csv(MarkPapers, "output/MarkPapers.csv", row.names = F)
 # alternative
 marko_abstracts_list <- articles_to_list(my_abstracts_xml)
 onearticle<-article_to_df(marko_abstracts_list[[1]], autofill = FALSE,
-              max_chars = 500, getKeywords = T,
+              max_chars = -1, getKeywords = T,
               getAuthors = TRUE)
 write.csv(onearticle, "output/MarkonePaper.csv", row.names = F)
 
