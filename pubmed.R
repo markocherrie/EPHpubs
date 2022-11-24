@@ -2,7 +2,8 @@
 
 library(easyPubMed)
 
-my_query <- "Mark Cherrie[AU]"
+my_query <- "Institute of Occupational Medicine[affil] AND
+             Edinburgh[affil]"
 my_entrez_id <- get_pubmed_ids(my_query)
 my_abstracts_txt <- fetch_pubmed_data(my_entrez_id, format = "abstract")
 
@@ -12,13 +13,18 @@ titles <- custom_grep(my_abstracts_xml, "ArticleTitle", "char")
 abstracts <- custom_grep(my_abstracts_xml, "AbstractText", "char")
 keywords <- custom_grep(my_abstracts_xml, "AbstractText", "char")
 
-MarkPapers<-cbind(titles, abstracts)
-write.csv(MarkPapers, "output/MarkPapers.csv", row.names = F)
+IOMPapers<-cbind(titles, keywords)
+#write.csv(MarkPapers, "output/MarkPapers.csv", row.names = F)
 
 # alternative
 marko_abstracts_list <- articles_to_list(my_abstracts_xml)
-onearticle<-article_to_df(marko_abstracts_list[[1]], autofill = FALSE,
+allarticles<-NA
+for(i in 1:(length(marko_abstracts_list))){
+onearticle<-article_to_df(marko_abstracts_list[[i]], autofill = FALSE,
               max_chars = -1, getKeywords = T,
               getAuthors = TRUE)
-write.csv(onearticle, "output/MarkonePaper.csv", row.names = F)
+allarticles<-rbind(allarticles, onearticle)
+}
+
+#write.csv(allarticles, "output/IOMPapers.csv", row.names = F)
 
